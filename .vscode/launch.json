@@ -1,0 +1,23 @@
+
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Main",
+            "projectName": "LibrarySystem_29f91a9f"
+        },
+        {
+            "type": "java",
+            "name": "Run DBConnection Test",
+            "request": "launch",
+            "mainClass": "test.DBTest",
+            "classPaths": [
+                "bin",
+                "lib/mysql-connector-j-8.x.x.jar"
+            ]
+        }
+    ]
+}
