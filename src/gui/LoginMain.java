@@ -3,7 +3,7 @@ package gui;
 import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.net.URL;
 import dao.UserDAO;
 
 public class LoginMain extends JFrame {
@@ -12,22 +12,34 @@ public class LoginMain extends JFrame {
     private JPasswordField passwordField;
     private JComboBox<String> roleComboBox;
 
-    public void LoginFrame() {
+    public LoginMain() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+        URL iconURL = getClass().getClassLoader().getResource("resources/bookicon.png");
+
+        // Check whether it can load the Icon (top left of the JFrame)
+        if (iconURL != null) {
+            setIconImage(Toolkit.getDefaultToolkit().getImage(iconURL));
+        } else {
+            System.err.println("Icon resource not found!");
+        }
+
+        // Setup
+        getContentPane().setBackground(new Color(217, 250, 250));
         setTitle("Library Management System - Login");
         setSize(1000, 800);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout()); // Center panel in frame
+        setLayout(new GridBagLayout()); // Center panel
 
-        setExtendedState(JFrame.MAXIMIZED_BOTH); 
-        add(createFormBox()); // Box-like panel
+        setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximized by default
+        add(createFormBox());
         setSize(screenSize);
-        setResizable(false);
-        setVisible(true);
+        setResizable(false); // Not Resizable
+        setVisible(true); // Show the GUI
     }
 
+    // Create the Box for Login
     private JPanel createFormBox() {
         JPanel formBox = new JPanel();
         formBox.setLayout(new BoxLayout(formBox, BoxLayout.Y_AXIS));
@@ -42,7 +54,7 @@ public class LoginMain extends JFrame {
 
         // Title
         JLabel title = new JLabel("Library Login", SwingConstants.CENTER);
-        title.setFont(new Font("SansSerif", Font.BOLD, 20));
+        title.setFont(new Font("Consolas", Font.BOLD, 20));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(new Color(143, 227, 207));
         formBox.add(Box.createRigidArea(new Dimension(0, 20)));
@@ -56,7 +68,8 @@ public class LoginMain extends JFrame {
         passwordField = new JPasswordField();
         formBox.add(createField("Password:", passwordField));
 
-        roleComboBox = new JComboBox<>(new String[] { "admin", "student" });
+        roleComboBox = new JComboBox<>(new String[] {"Admin", "Student"});
+        roleComboBox.setFont(new Font("Consolas", Font.PLAIN, 14));
         formBox.add(createField("Role:", roleComboBox));
 
         // Login button
@@ -64,19 +77,23 @@ public class LoginMain extends JFrame {
 
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-        Dimension buttonSize = new Dimension(140, 40);  // Example size
+        // Set Button Size
+        Dimension buttonSize = new Dimension(140, 40);  
         loginButton.setPreferredSize(buttonSize);
         loginButton.setMaximumSize(buttonSize);
         loginButton.setMinimumSize(buttonSize);
 
+        // Set Button Colour
         loginButton.setForeground(new Color(143, 227, 207));              // Text color
         loginButton.setBackground(new Color(0, 43, 91));                  // Primary background
         loginButton.setFocusPainted(false);
         loginButton.setBorder(BorderFactory.createLineBorder(new Color(37, 109, 133), 2)); // Accent border
 
+        // cursor:pointer; xD
         loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginButton.addActionListener(e -> handleLogin());
 
+        // Hovering "Animation"
         loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 loginButton.setBackground(new Color(43, 72, 101)); // Hover
@@ -102,6 +119,7 @@ public class LoginMain extends JFrame {
         JLabel label = new JLabel(labelText);
         label.setPreferredSize(new Dimension(80, 30));
         label.setForeground(new Color(143, 227, 207));
+        label.setFont(new Font("Consolas", Font.PLAIN, 16));
 
         if (inputComponent instanceof JTextField) {
             ((JTextField) inputComponent).setBorder(BorderFactory.createCompoundBorder(
