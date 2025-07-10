@@ -7,9 +7,10 @@ import user.User;
 public class TestUserDAO {
     public static void main(String[] args) {
     
-        User loggedIn = UserDAO.loginUser("melody123", "gayming123", "student");
+        User loggedIn = UserDAO.loginUser("melody123", "gayming123");
         if (loggedIn != null) {
             System.out.println(loggedIn);
+            System.out.println(loggedIn.getPassword());
         }
 
         else {
@@ -19,7 +20,6 @@ public class TestUserDAO {
         // Register test..
         // boolean registered = UserDAO.registerUser("sam", "sam123", "admin");
         //System.out.println(registered ? "Registration successful" : "Registration failed");
-
 
     }
 }

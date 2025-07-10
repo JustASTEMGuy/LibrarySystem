@@ -73,10 +73,6 @@ public class LoginMain extends JFrame {
         passwordField = new JPasswordField();
         formBox.add(createField("Password:", passwordField));
 
-        roleComboBox = new JComboBox<>(new String[] {"admin", "student"});
-        roleComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-        formBox.add(createField("Role:", roleComboBox));
-
         // Login button
         JButton loginButton = new JButton("Login");
 
@@ -163,7 +159,6 @@ public class LoginMain extends JFrame {
     private void handleLogin() { // Inside the button's event listener
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
-        String role = (String) roleComboBox.getSelectedItem();
 
         // Check if Field is Empty
         if (username.isEmpty() || password.isEmpty()) {
@@ -171,9 +166,9 @@ public class LoginMain extends JFrame {
             return;
         }
 
-        User user = UserDAO.loginUser(username, password, role);
+        User user = UserDAO.loginUser(username, password);
 
-        System.out.println("Username: " + username + "Pass: " + password + "Role: " + role);
+        System.out.println("Username: " + username + "Pass: " + password);
         System.out.println(user);
 
         if (user != null) {

@@ -5,25 +5,26 @@ import user.Admin;
 import user.Student;
 import user.User;
 import java.sql.*;
-import javax.security.auth.x500.X500Principal;
 
 public class UserDAO {
 
-    public static User loginUser(String username, String password, String role) {
-        String query = "SELECT * FROM users WHERE username = ? AND password = ? AND role = ?";
+    public static User loginUser(String username, String password) { // Return a User class type
+        
+        String query = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(query)) {
 
             stmt.setString(1, username);
             stmt.setString(2, password);
-            stmt.setString(3, role);
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) { // Record is found 
-                if (role.equals("admin")) {
+                String role = rs.getString("role");
+                if (role.equalsIgnoreCase("admin")) {
+                    System.out.println("It's an admin!");
                     return new Admin(username, password);
                 }
-                else if (role.equals("student")) {
+                else if (role.equalsIgnoreCase("student")) {
                     return new Student(username, password);
                 }
             }
