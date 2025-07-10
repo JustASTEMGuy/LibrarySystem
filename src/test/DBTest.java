@@ -5,6 +5,7 @@ import config.DBConnection;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+// Test File for Database Connection
 public class DBTest {
     public static void main(String[] args) {
         try (Connection conn = DBConnection.getConnection()) {

@@ -4,7 +4,12 @@ import javax.swing.*;
 import javax.swing.border.*;
 import java.awt.*;
 import java.net.URL;
+
 import dao.UserDAO;
+
+import user.Admin;
+import user.Student;
+import user.User;
 
 public class LoginMain extends JFrame {
 
@@ -13,8 +18,9 @@ public class LoginMain extends JFrame {
     private JComboBox<String> roleComboBox;
 
     public LoginMain() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
+        // JFrame Icon
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         URL iconURL = getClass().getClassLoader().getResource("resources/bookicon.png");
 
         // Check whether it can load the Icon (top left of the JFrame)
@@ -24,19 +30,18 @@ public class LoginMain extends JFrame {
             System.err.println("Icon resource not found!");
         }
 
-        // Setup
+        // JFrame Setup
         getContentPane().setBackground(new Color(217, 250, 250));
-        setTitle("Library Management System - Login");
-        setSize(1000, 800);
+        setTitle("Ol' Days Library Management System - Login");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridBagLayout()); // Center panel
+        setLayout(new GridBagLayout());
 
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximized by default
         add(createFormBox());
         setSize(screenSize);
         setResizable(false); // Not Resizable
-        setVisible(true); // Show the GUI
+        setVisible(true); // Show GUI
     }
 
     // Create the Box for Login
@@ -53,7 +58,7 @@ public class LoginMain extends JFrame {
         formBox.setMinimumSize(boxSize);
 
         // Title
-        JLabel title = new JLabel("Library Login", SwingConstants.CENTER);
+        JLabel title = new JLabel("Ol' Days Library Login", SwingConstants.CENTER);
         title.setFont(new Font("Consolas", Font.BOLD, 20));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(new Color(143, 227, 207));
@@ -68,8 +73,8 @@ public class LoginMain extends JFrame {
         passwordField = new JPasswordField();
         formBox.add(createField("Password:", passwordField));
 
-        roleComboBox = new JComboBox<>(new String[] {"Admin", "Student"});
-        roleComboBox.setFont(new Font("Consolas", Font.PLAIN, 14));
+        roleComboBox = new JComboBox<>(new String[] {"admin", "student"});
+        roleComboBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         formBox.add(createField("Role:", roleComboBox));
 
         // Login button
@@ -78,7 +83,7 @@ public class LoginMain extends JFrame {
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Set Button Size
-        Dimension buttonSize = new Dimension(140, 40);  
+        Dimension buttonSize = new Dimension(200, 50);  
         loginButton.setPreferredSize(buttonSize);
         loginButton.setMaximumSize(buttonSize);
         loginButton.setMinimumSize(buttonSize);
@@ -92,6 +97,20 @@ public class LoginMain extends JFrame {
         // cursor:pointer; xD
         loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginButton.addActionListener(e -> handleLogin());
+        
+        // Use "Enter" to submit the button (Request by Yau Mun)
+        loginButton.setFocusable(true);
+        getRootPane().setDefaultButton(loginButton);
+
+        JButton registerButton = new JButton("Register");
+        registerButton.setBackground(new Color(0, 43, 91));
+        registerButton.setForeground(new Color(143, 227, 207));
+        registerButton.setFocusPainted(false);
+        registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        registerButton.setPreferredSize(buttonSize);
+        registerButton.setMaximumSize(buttonSize);
+        registerButton.setMinimumSize(buttonSize);
 
         // Hovering "Animation"
         loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -103,10 +122,16 @@ public class LoginMain extends JFrame {
             }
         });
 
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
 
+        buttonPanel.add(loginButton);
+        buttonPanel.add(registerButton);
 
         formBox.add(Box.createRigidArea(new Dimension(0, 20)));
-        formBox.add(loginButton);
+
+        buttonPanel.setBorder(new EmptyBorder(0, 80, 0, 0));
+        formBox.add(buttonPanel);
 
         return formBox;
     }
@@ -135,24 +160,51 @@ public class LoginMain extends JFrame {
         return fieldPanel;
     }
 
-    private void handleLogin() {
+    private void handleLogin() { // Inside the button's event listener
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
         String role = (String) roleComboBox.getSelectedItem();
 
+        // Check if Field is Empty
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter username and password.", "Validation Error", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        if (UserDAO.loginUser(username, password, role)) {
-            JOptionPane.showMessageDialog(this, "Login successful.", "Success", JOptionPane.INFORMATION_MESSAGE);
-            dispose();
-            if (role.equals("admin")) {
-            //    new AdminDashboard(username);
-            } else {
-             //   new StudentDashboard(username);
+        User user = UserDAO.loginUser(username, password, role);
+
+        System.out.println("Username: " + username + "Pass: " + password + "Role: " + role);
+        System.out.println(user);
+
+        if (user != null) {
+            JOptionPane.showMessageDialog(null, "Login Successful! " + username);
+
+            JFrame dashboardFrame = new JFrame();
+            dashboardFrame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+            dashboardFrame.setExtendedState(MAXIMIZED_BOTH);
+            
+            dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            
+            if (user instanceof Admin admin) {
+                dashboardFrame.setTitle("Admin Dashboard");
+                dashboardFrame.setContentPane(new AdminDashboard(admin));
+                
+                URL iUrl = getClass().getClassLoader().getResource("resources/adminicon.png");
+
+                // Check for Icon
+                if (iUrl != null) {
+                    dashboardFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iUrl));
+                } else {
+                    System.err.println("Icon resource not found!");
+                }
+            } else if (user instanceof Student student) {
+                dashboardFrame.setTitle("Student Dashboard");
+                dashboardFrame.setContentPane(new StudentDashboard(student));
             }
+
+            dashboardFrame.setVisible(true);
+            dispose();
+    
         } else {
             JOptionPane.showMessageDialog(this, "Invalid username or password.", "Login Failed", JOptionPane.ERROR_MESSAGE);
         }

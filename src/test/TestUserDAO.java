@@ -1,18 +1,24 @@
 package test;
 
 import dao.UserDAO;
+import user.User;
 
+// Test file for User Authentication (DAO - Data Access Object - Data Abstraction)
 public class TestUserDAO {
     public static void main(String[] args) {
-        // login test..
+    
+        User loggedIn = UserDAO.loginUser("melody123", "gayming123", "student");
+        if (loggedIn != null) {
+            System.out.println(loggedIn);
+        }
 
-        UserDAO userDAO = new UserDAO();
-        boolean loggedIn = userDAO.loginUser("melody123", "gayming123", "student");
-        System.out.println(loggedIn ? "Melody123 successful" : "Login failed");
+        else {
+            System.err.println("no ok");
+        }
 
         // Register test..
-        boolean registered = UserDAO.registerUser("sam", "sam123", "admin");
-        System.out.println(registered ? "Registration successful" : "Registration failed");
+        // boolean registered = UserDAO.registerUser("sam", "sam123", "admin");
+        //System.out.println(registered ? "Registration successful" : "Registration failed");
 
 
     }
