@@ -5,6 +5,6 @@ import user.User;
 
 public class StudentDashboard extends JPanel{
     public StudentDashboard(User user) {
-        System.out.println("Admin LOGIN!");
+        System.out.println("Student LOGIN!");
     }
 }

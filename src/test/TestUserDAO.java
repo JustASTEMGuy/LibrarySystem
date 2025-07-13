@@ -17,9 +17,13 @@ public class TestUserDAO {
             System.err.println("no ok");
         }
 
-        // Register test..
-        // boolean registered = UserDAO.registerUser("sam", "sam123", "admin");
-        //System.out.println(registered ? "Registration successful" : "Registration failed");
+        User registerIn = UserDAO.registerUser("sam", "sam123", "admin", "sam@gmail.com");
+        if (registerIn != null) {
+            System.out.println("Success!!");
+        }
 
+        else {
+            System.out.println("no shit");
+        }
     }
 }

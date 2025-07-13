@@ -35,22 +35,25 @@ public class UserDAO {
         }
         return null;
     }
-
-    public static boolean registerUser(String username, String password, String role) {
-        String insert = "INSERT INTO users (username, password, role) VALUES (?, ?, ?)";
+    
+    // Working on this...
+    public static User registerUser(String username, String password, String role, String email) {
+        String insert = "INSERT INTO users (username, password, role, email) VALUES (?, ?, ?, ?)";
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(insert)) {
 
             stmt.setString(1, username);
             stmt.setString(2, password);
             stmt.setString(3, role);
+            stmt.setString(4, email);
 
             int rows = stmt.executeUpdate();
-            return rows > 0;
+            return new Student(username, password);
 
         } catch (SQLException e) {
             System.err.println("Registration error: " + e.getMessage());
-            return false;
+            
         }
+        return null;
     }
 }

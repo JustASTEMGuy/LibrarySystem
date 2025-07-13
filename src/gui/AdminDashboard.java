@@ -5,7 +5,6 @@ import gui.panels.*;
 
 import javax.swing.*;
 import java.awt.*;
-import org.w3c.dom.css.RGBColor;
 
 public class AdminDashboard extends JPanel {
     private final Admin admin;
@@ -81,6 +80,15 @@ public class AdminDashboard extends JPanel {
                 signOutButton.setBackground(new Color(0xD9534F));
                 
             }
+        });
+
+        // Sign Out Function
+        signOutButton.addActionListener(e -> {
+            SwingUtilities.getWindowAncestor(this).dispose(); // Dispose this window
+
+            LoginMain loginMain = new LoginMain(); // Redirect to Login Page
+            loginMain.setVisible(true);
+            JOptionPane.showMessageDialog(null,"Signed out successfully!");
         });
 
         JPanel rightButtonPanel = new JPanel(new BorderLayout());

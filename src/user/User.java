@@ -1,6 +1,8 @@
 package user;
 
 public abstract class User {
+
+    // Encapsulation
     protected String username;
     protected String password;
     protected String role;
