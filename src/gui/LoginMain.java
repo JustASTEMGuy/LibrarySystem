@@ -15,7 +15,6 @@ public class LoginMain extends JFrame {
 
     private JTextField usernameField;
     private JPasswordField passwordField;
-    private JComboBox<String> roleComboBox;
 
     public LoginMain() {
 
@@ -85,8 +84,8 @@ public class LoginMain extends JFrame {
         loginButton.setMinimumSize(buttonSize);
 
         // Set Button Colour
-        loginButton.setForeground(new Color(143, 227, 207));              // Text color
-        loginButton.setBackground(new Color(0, 43, 91));                  // Primary background
+        loginButton.setForeground(new Color(143, 227, 207));              
+        loginButton.setBackground(new Color(0, 43, 91));                  
         loginButton.setFocusPainted(false);
         loginButton.setBorder(BorderFactory.createLineBorder(new Color(37, 109, 133), 2)); // Accent border
 
@@ -210,7 +209,7 @@ public class LoginMain extends JFrame {
             dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
             if (user instanceof Admin admin) {
-                dashboardFrame.setTitle("Admin Dashboard");
+                dashboardFrame.setTitle("O' Days Library Management System - Admin Dashboard");
                 dashboardFrame.setContentPane(new AdminDashboard(admin));
                 
                 URL iUrl = getClass().getClassLoader().getResource("resources/adminicon.png");

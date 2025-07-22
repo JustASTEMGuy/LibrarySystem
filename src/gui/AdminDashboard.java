@@ -17,7 +17,7 @@ public class AdminDashboard extends JPanel {
     private void initUI() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
-
+        
         // Top Panel Begins
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(new Color(63, 81, 181));

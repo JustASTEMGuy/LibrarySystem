@@ -32,7 +32,7 @@ public class RegisterMain extends JFrame {
 
         // JFrame Setup
         getContentPane().setBackground(new Color(217, 250, 250));
-        setTitle("O' Days Library Management System - Login");
+        setTitle("O' Days Library Management System - Register");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new GridBagLayout());
@@ -58,7 +58,7 @@ public class RegisterMain extends JFrame {
         formBox.setMinimumSize(boxSize);
 
         // Title
-        JLabel title = new JLabel("Ol' Days Library Login", SwingConstants.CENTER);
+        JLabel title = new JLabel("Ol' Days Library Register", SwingConstants.CENTER);
         title.setFont(new Font("Consolas", Font.BOLD, 20));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
         title.setForeground(new Color(143, 227, 207));
@@ -107,11 +107,40 @@ public class RegisterMain extends JFrame {
             }
         });
 
+        JButton loginButton = new JButton("Back to Login");
+        loginButton.setBackground(new Color(0, 43, 91));
+        loginButton.setForeground(new Color(143, 227, 207));
+        loginButton.setFocusPainted(false);
+        loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        loginButton.setPreferredSize(buttonSize);
+        loginButton.setMaximumSize(buttonSize);
+        loginButton.setMinimumSize(buttonSize);
+
+        // Hovering "Animation"
+
+        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        loginButton.addActionListener(e -> {JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(formBox);
+            topFrame.dispose(); // Close login window
+
+            LoginMain loginMain = new LoginMain(); // Launch registration
+            loginMain.setVisible(true);});
+            loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
+
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                loginButton.setBackground(new Color(43, 72, 101));
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                loginButton.setBackground(new Color(0, 43, 91)); 
+            }
+        });
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
 
         buttonPanel.add(registerButton);
-
+        buttonPanel.add(loginButton);
         formBox.add(Box.createRigidArea(new Dimension(0, 20)));
 
         buttonPanel.setBorder(new EmptyBorder(0, 80, 0, 0));
@@ -168,12 +197,13 @@ public class RegisterMain extends JFrame {
             JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             this.dispose(); // Close registration frame
             
-                JFrame dashboardFrame = new JFrame();
-                dashboardFrame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
-                dashboardFrame.setExtendedState(MAXIMIZED_BOTH);
-                
-                dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            JFrame dashboardFrame = new JFrame();
+            dashboardFrame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
+            dashboardFrame.setExtendedState(MAXIMIZED_BOTH);
+            
+            dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
+        
         else {
             JOptionPane.showMessageDialog(null, "Registration Unsuccessful!");
         }
