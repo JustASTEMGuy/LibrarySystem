@@ -73,7 +73,7 @@ public class AdminDashboard extends JPanel {
         // Hovering Mouse
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                signOutButton.setBackground(new Color(43, 72, 101));
+                signOutButton.setBackground(new Color(0xB9534F));
                 
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {

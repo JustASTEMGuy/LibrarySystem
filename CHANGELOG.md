@@ -2,6 +2,21 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.6] - 2025-07-29
+
+> Notable Changes are applied mostly to Book Panel from Admin's Dashboard.
+
+### Added
+
+- Added sort button (ASC and DESC), able to sort book data by column name.
+- Added Edit and Deleted Functions (revamped).
+
+### Changed
+
+- Edit & Delete Function no longer use buttons, instead it checks for user's **double click** on a data row.
+- Add Button modified from "Add" to "Add Books"
+
+
 ## [1.5] - 2025-07-22
 
 ### Added
