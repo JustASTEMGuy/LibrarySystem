@@ -146,6 +146,9 @@ public class RegisterMain extends JFrame {
         buttonPanel.setBorder(new EmptyBorder(0, 80, 0, 0));
         formBox.add(buttonPanel);
 
+        registerButton.setFocusable(true);
+        getRootPane().setDefaultButton(registerButton);
+
         return formBox;
 
     }
@@ -197,6 +200,9 @@ public class RegisterMain extends JFrame {
             JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             this.dispose(); // Close registration frame
             
+            LoginMain loginMain = new LoginMain();
+            loginMain.setVisible(true);
+
             JFrame dashboardFrame = new JFrame();
             dashboardFrame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
             dashboardFrame.setExtendedState(MAXIMIZED_BOTH);

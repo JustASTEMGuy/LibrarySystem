@@ -105,7 +105,7 @@ public class AdminDashboard extends JPanel {
 
         // Book/Member/Transaction tab Panels
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Books", new BooksPanel());
+        tabbedPane.add("Books", new BooksPanel(getName()));
         tabbedPane.add("Members", new MembersPanel());
         tabbedPane.add("Transactions", new TransactionsPanel());
 

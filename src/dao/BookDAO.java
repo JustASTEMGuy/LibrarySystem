@@ -55,6 +55,30 @@ public class BookDAO {
         return null;
     }
 
+    public static boolean borrowBook(int bookID) {
+        String checkSql = "SELECT quantity FROM books WHERE id = ?";
+        String updateSql = "UPDATE books SET quantity = quantity - 1 WHERE id = ? AND quantity > 0";
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+
+            checkStmt.setInt(1, bookID);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next()) {
+                int qty = rs.getInt("quantity");
+                if (qty > 0) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                        updateStmt.setInt(1, bookID);
+                        int updated = updateStmt.executeUpdate();
+                        return updated > 0;
+                    }
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Borrow failed: " + e.getMessage());
+        }
+        return false;
+    }
+    
     public static void deleteBook(int id) {
         String delete = "DELETE FROM books WHERE id=?";
         try (Connection conn = DBConnection.getConnection();

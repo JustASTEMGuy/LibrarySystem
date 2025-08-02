@@ -19,8 +19,10 @@ public class BooksPanel extends JPanel{
     private JButton addButton, sortButton;
     private boolean isSortActive, isAscending;
     private int currentSortColumn;
+    private String role;
 
-    public BooksPanel() {
+    public BooksPanel(String role) {
+        this.role = role;
         setLayout(new BorderLayout());
         JPanel toolbar = new JPanel(new BorderLayout());
         JPanel leftbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
@@ -45,6 +47,11 @@ public class BooksPanel extends JPanel{
         sortButton.addActionListener(e -> {
             handleSort();
         });
+
+        if(!"admin".equalsIgnoreCase(role)){
+            addButton.setVisible(false);
+            sortButton.setVisible(false);
+        }
 
         toolbar.add(leftbar, BorderLayout.WEST);
         toolbar.add(rightbar, BorderLayout.EAST);
@@ -130,8 +137,8 @@ public class BooksPanel extends JPanel{
         String bookGenre = book.get(row).getGenre();
         int bookQty = book.get(row).getQuantity();
 
+        if("admin".equalsIgnoreCase(role)){
         int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Edit", "Delete"},"Edit");
-        
         switch (choice) {
             case 0: // Edit Function
                 showEditDialog(new Book(bookID, booktitle, bookAuthor, bookGenre, bookQty));
@@ -141,6 +148,29 @@ public class BooksPanel extends JPanel{
                 deleteBook();
                 break;
         
+            }
+        } 
+        else{
+            int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Borrow", "View"},"Borrow");
+        switch (choice) {
+            case 0: // Borrow
+                borrowBook(bookID);
+                break;
+            case 1: // View
+                JOptionPane.showMessageDialog(null, "Title: " + booktitle + "\nAuthor: " + bookAuthor + "\nGenre: " + bookGenre + "\nQuantity: " + bookQty, "Book Details", JOptionPane.INFORMATION_MESSAGE);
+                break;
+        }
+        }
+    }
+
+    private void borrowBook(int bookID){
+        boolean success = BookDAO.borrowBook(bookID);
+        if(success){
+            JOptionPane.showMessageDialog(null, "Book borrowed successfully!");
+            update();
+        }
+        else {
+            JOptionPane.showMessageDialog(null, "Failed to borrow book.");
         }
     }
 
