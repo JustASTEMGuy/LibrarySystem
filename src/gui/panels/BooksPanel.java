@@ -4,21 +4,26 @@ import dao.BookDAO;
 import obj.Book;
 
 import javax.swing.*;
+import javax.swing.event.*;
+
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.lang.reflect.Array;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-public class BooksPanel extends JPanel{
+
+public class BooksPanel extends JPanel {
 
     private JTable bookTable;
     public DefaultTableModel tableModel;
     private JButton addButton, sortButton;
-    private boolean isSortActive, isAscending;
+    private boolean isSortActive, isAscending, placeholderActive;
     private int currentSortColumn;
+    private ArrayList<Book> visibleBooks = new ArrayList<>();
     private String role;
 
     public BooksPanel(String role) {
@@ -35,7 +40,70 @@ public class BooksPanel extends JPanel{
         sortButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
         sortButton.setToolTipText("Sort Books");
 
+        // Search Field
+        JTextField searchField = new JTextField("Search by Title");
+        searchField.setPreferredSize(new Dimension(200, 30));
+        placeholderActive = true;
+
+        // Placeholder Illusion idea
+        searchField.addFocusListener(new FocusListener() {
+
+            @Override
+            public void focusGained(FocusEvent e) {
+                placeholderActive = false;
+                searchField.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                if (searchField.getText().trim().isEmpty()) {
+                    placeholderActive = true;
+                    searchField.setText("Search by Title");
+                }
+            }
+        });
+
+        searchField.addActionListener(e-> {
+            System.out.println("Action!");
+            searchField.transferFocus();
+            if (searchField.getText().equals("")) {
+                placeholderActive = true;
+                searchField.setText("Search by Title");
+            }
+        });
+
+        // Dynamic Search
+        searchField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                updateText(searchField);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                updateText(searchField);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                // Not used
+            }
+
+            public void updateText(JTextField s){ // Link to SQL statement update
+                if(!placeholderActive && !(s.getText().equals(""))) { // IF there's NO PLACEHOLDER
+                    handleSearch(s.getText());
+                }
+
+                else {
+                    if(s.getText().equals("")) {
+                        update();
+                    }
+                }  
+            }
+        });
+
         leftbar.add(addButton);
+        leftbar.add(searchField);
         rightbar.add(sortButton);
         isSortActive = false;
         isAscending = true;
@@ -60,6 +128,7 @@ public class BooksPanel extends JPanel{
         initTable();
     }
 
+    // Create Table (Setup)
     private void initTable() {
         String[] titlecolumn = {"Book ID", "Title", "Author", "Genre", "Quantity"};
         tableModel = new DefaultTableModel(titlecolumn, 0);
@@ -69,10 +138,10 @@ public class BooksPanel extends JPanel{
         bookTable.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         bookTable.setRowHeight(24);
 
-        bookTable.getTableHeader().setReorderingAllowed(false);
+        bookTable.getTableHeader().setReorderingAllowed(false); //Disallow user to reorder column (cause slight confusion)
         bookTable.setDefaultEditor(Object.class, null);
 
-        bookTable.getSelectionModel().clearSelection();
+        bookTable.getSelectionModel().clearSelection(); // Clear all selection before loading
 
         bookTable.addMouseListener(new MouseAdapter() {
             
@@ -95,47 +164,27 @@ public class BooksPanel extends JPanel{
     private void update() {
         tableModel.setRowCount(0);
         System.out.println("Table Refreshed!");
-        ArrayList<Book> book;
-        if (isSortActive) {
-            if (isAscending) {
-                book = BookDAO.sortBook(currentSortColumn, true);
-            }
-            else {
-                book = BookDAO.sortBook(currentSortColumn, false);
-            }
-            
-        }
 
-        else {
-            book = BookDAO.fetchBooks();
-        }
-        for (Book b : book) {
+        visibleBooks = isSortActive
+        ? BookDAO.sortBook(currentSortColumn, isAscending)
+        : BookDAO.fetchBooks();
+
+        tableModel.setRowCount(0);
+        for (Book b : visibleBooks) {
             tableModel.addRow(new Object[]{b.getID(), b.getTitle(), b.getAuthor(), b.getGenre(), b.getQuantity()});
         }
-
     }
 
+    // Double Click Method (after clicking)
     private void handleDoubleClick() {
         int row = bookTable.getSelectedRow();
-        ArrayList<Book> book;
-        if (isSortActive) {
-            if (isAscending) {
-                book = BookDAO.sortBook(currentSortColumn, true);
-            }
-            else {
-                book = BookDAO.sortBook(currentSortColumn, false);
-            }
-        }
 
-        else {
-            book = BookDAO.fetchBooks();
-        }
-        
-        int bookID = book.get(row).getID();
-        String booktitle = book.get(row).getTitle();
-        String bookAuthor = book.get(row).getAuthor();
-        String bookGenre = book.get(row).getGenre();
-        int bookQty = book.get(row).getQuantity();
+        Book selectedBook = visibleBooks.get(row);
+        int bookID = selectedBook.getID();
+        String booktitle = selectedBook.getTitle();
+        String bookAuthor = selectedBook.getAuthor();
+        String bookGenre = selectedBook.getGenre();
+        int bookQty = selectedBook.getQuantity();
 
         if("admin".equalsIgnoreCase(role)){
         int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Edit", "Delete"},"Edit");
@@ -152,7 +201,8 @@ public class BooksPanel extends JPanel{
         } 
         else{
             int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Borrow", "View"},"Borrow");
-        switch (choice) {
+        
+            switch (choice) {
             case 0: // Borrow
                 borrowBook(bookID);
                 break;
@@ -210,9 +260,11 @@ public class BooksPanel extends JPanel{
         if (result == JOptionPane.OK_OPTION) {
             int selectedOption = comboBox.getSelectedIndex();
             currentSortColumn = selectedOption;
+            
             if (selectedOption == 0) {
                 isSortActive = false;
             }
+            
             else {
                 isSortActive = true;
             }
@@ -240,7 +292,6 @@ public class BooksPanel extends JPanel{
                     tableModel.addRow(new Object[]{b.getID(), b.getTitle(), b.getAuthor(), b.getGenre(), b.getQuantity()});
                 }
             }
-            
         }
     }
 
@@ -256,7 +307,7 @@ public class BooksPanel extends JPanel{
             "Title:", titleField, "Author:", authorField, "Genre:", genreField,"Quantity:", quantityField
         };
 
-        Icon icon = new ImageIcon("lib/book-stack.png");
+        Icon icon = new ImageIcon("src\\resources\\book-stack.png");
         Image iconimage = ((ImageIcon) icon).getImage();
         Image newImage = iconimage.getScaledInstance(64, 64, Image.SCALE_SMOOTH);
         Icon newIcon = new ImageIcon(newImage);
@@ -266,20 +317,23 @@ public class BooksPanel extends JPanel{
         if (result == JOptionPane.OK_OPTION) {
             String q = quantityField.getText().trim();
             
+
             if (q.isEmpty()) {
                 JOptionPane.showMessageDialog(null, "Quantity is required.");
                 return;
             }
 
-            else if (Integer.parseInt(q) < 0) {
-                JOptionPane.showMessageDialog(null, "Invalid Quantity (< 0)");
-                return;
-            }
 
             int quantity;
 
             try {
                 quantity = Integer.parseInt(q);
+
+                if (Integer.parseInt(q) < 0) {
+                    JOptionPane.showMessageDialog(null, "Invalid Quantity (< 0)");
+                    return;
+                }
+
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(null, "Quantity must be a valid number.");
                 return;
@@ -316,6 +370,7 @@ public class BooksPanel extends JPanel{
                 if (updatedSuccess) {
                     JOptionPane.showMessageDialog(null, "Book updated successfully.");
                     update();
+                    
 
                 } else {
                     JOptionPane.showMessageDialog(null, "Failed to update book.");
@@ -325,6 +380,15 @@ public class BooksPanel extends JPanel{
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(null, "Quantity must be a number.");
             }
+        }
+    }
+
+    // Search Box Handling
+    private void handleSearch(String phrase) {
+        visibleBooks = BookDAO.searchUpdate(phrase);
+        tableModel.setRowCount(0);
+        for (Book b : visibleBooks) {
+            tableModel.addRow(new Object[]{b.getID(), b.getTitle(), b.getAuthor(), b.getGenre(), b.getQuantity()});
         }
     }
 }

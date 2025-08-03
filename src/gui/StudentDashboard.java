@@ -8,6 +8,7 @@ import java.awt.*;
 
 public class StudentDashboard extends JPanel {
     private final Student student;
+    private JLabel subtitle2;
 
     public StudentDashboard(Student student) {
         this.student = student;
@@ -20,7 +21,7 @@ public class StudentDashboard extends JPanel {
         
         // Top Panel Begins
         JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(new Color(63, 81, 181));
+        topPanel.setBackground(new Color(181, 63, 63));
         topPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 20, 30));
         topPanel.setPreferredSize(new Dimension(800, 160));
 
@@ -40,17 +41,24 @@ public class StudentDashboard extends JPanel {
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        subtitle2 = new JLabel("Book Borrowed: ");
+        subtitle2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        subtitle2.setForeground(Color.WHITE);
+        subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         textPanel.add(title);
         textPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         textPanel.add(subtitle1);
+        textPanel.add(subtitle2);
         
         // Sign Out Button Setup
         JButton signOutButton = new JButton("Sign Out");
         signOutButton.setFocusPainted(false);
-        signOutButton.setBackground(new Color(0xD9534F));
+        signOutButton.setBackground(new Color(79, 109, 217));
 
         signOutButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         signOutButton.setForeground(Color.WHITE);
+        signOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         signOutButton.setMargin(new Insets(2, 10, 2, 10));
         signOutButton.setBorder(BorderFactory.createEmptyBorder(2, 10, 2, 10));
@@ -59,11 +67,11 @@ public class StudentDashboard extends JPanel {
         // Hovering Mouse
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                signOutButton.setBackground(new Color(0xB9534F));
+                signOutButton.setBackground(new Color(79, 120, 185));
                 
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                signOutButton.setBackground(new Color(0xD9534F));
+                signOutButton.setBackground(new Color(79, 109, 217));
                 
             }
         });
@@ -94,7 +102,7 @@ public class StudentDashboard extends JPanel {
         tabbedPane.add("Books", new BooksPanel(getName()));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
-        centerPanel.setBackground(new Color(197, 202, 233));
+        centerPanel.setBackground(new Color(233, 203, 197));
         centerPanel.setBorder(BorderFactory.createEmptyBorder(20, 30, 30, 30));
         centerPanel.add(tabbedPane, BorderLayout.CENTER);
 

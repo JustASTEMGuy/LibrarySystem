@@ -13,13 +13,14 @@ import obj.Book;
 
 public class BookDAO {
     
+    // Fetch the unsorted books
     public static ArrayList<Book> fetchBooks() {
-
+        
         ArrayList<Book> bookList = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection(); Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT * from books")) {
-                
+
             while (rs.next()) {
                 Book book = new Book(rs.getInt("id"), rs.getString("title"), rs.getString("author"), rs.getString("genre"), rs.getInt("quantity"));
                 bookList.add(book);
@@ -32,6 +33,7 @@ public class BookDAO {
         return bookList;
     }
 
+    // Add Book into DB
     public static Book addBook(String title, String author, String genre, int quantity) {
         String insert = "INSERT INTO books (title, author, genre, quantity) VALUES (?, ?, ?, ?)";
 
@@ -59,7 +61,7 @@ public class BookDAO {
         String checkSql = "SELECT quantity FROM books WHERE id = ?";
         String updateSql = "UPDATE books SET quantity = quantity - 1 WHERE id = ? AND quantity > 0";
         try (Connection conn = DBConnection.getConnection();
-             PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
 
             checkStmt.setInt(1, bookID);
             ResultSet rs = checkStmt.executeQuery();
@@ -93,6 +95,7 @@ public class BookDAO {
         }
     }
 
+    // Update Book in DB
     public static boolean updateBook(Book book) {
         String sql = "UPDATE books SET title = ?, author = ?, genre = ?, quantity = ? WHERE id = ?";
 
@@ -110,10 +113,31 @@ public class BookDAO {
             return affectedRows > 0;
 
         } catch (SQLException e) {
-            System.err.println("Update failed: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Update failed: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return false;
         }
     }
+
+    public static ArrayList<Book> searchUpdate(String phrase) {
+        String sql = "SELECT * from books WHERE title LIKE \'%" + phrase + "%\'";
+
+        try (Connection conn = DBConnection.getConnection(); Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)){
+
+            ArrayList<Book> bookList = new ArrayList<>();
+
+            while (rs.next()) {
+                Book book = new Book(rs.getInt("id"), rs.getString("title"), rs.getString("author"), rs.getString("genre"), rs.getInt("quantity"));
+                bookList.add(book);
+            }
+            return bookList;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Update failed: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
+    }
+
 
     // Sort Book Method
     public static ArrayList<Book> sortBook(int index, boolean asc) {
@@ -169,7 +193,7 @@ public class BookDAO {
             return bookList;
             
         } catch (SQLException e) {
-            System.err.println("Update failed: " + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Update failed: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return null;
         }
 

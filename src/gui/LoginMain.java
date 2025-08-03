@@ -183,7 +183,8 @@ public class LoginMain extends JFrame {
         return fieldPanel;
     }
 
-    private void handleLogin() { // Inside the button's event listener
+    // Inside the LOGIN button's event listener
+    private void handleLogin() { 
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
 

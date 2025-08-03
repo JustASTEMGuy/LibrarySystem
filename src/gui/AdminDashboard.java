@@ -1,5 +1,6 @@
 package gui;
 
+import dao.UserDAO;
 import user.Admin;
 import gui.panels.*;
 
@@ -7,11 +8,20 @@ import javax.swing.*;
 import java.awt.*;
 
 public class AdminDashboard extends JPanel {
-    private final Admin admin;
+    private Admin admin;
+    public static JLabel subtitle1, subtitle2, subtitle3;
 
     public AdminDashboard(Admin admin) {
         this.admin = admin;
         initUI();
+    }
+
+    public AdminDashboard() {
+    
+    }
+
+    public static void setSubtitle(String text) {
+        subtitle2.setText(text);
     }
 
     private void initUI() {
@@ -34,18 +44,18 @@ public class AdminDashboard extends JPanel {
         title.setForeground(Color.WHITE);
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        // Subtitles
-        JLabel subtitle1 = new JLabel("Books Borrowed: ");
+        // Subtitles 
+        subtitle1 = new JLabel("Total Books Borrowed: ");
         subtitle1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        JLabel subtitle2 = new JLabel("Members Registered: ");
+        subtitle2 = new JLabel("Total Students Registered: " + UserDAO.fetchTotalUser("student"));
         subtitle2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle2.setForeground(Color.WHITE);
-        subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);
+        subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 
-        JLabel subtitle3 = new JLabel("Transactions Owed: ");
+        subtitle3 = new JLabel("Total Transactions Owed: ");
         subtitle3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle3.setForeground(Color.WHITE);
         subtitle3.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -62,6 +72,7 @@ public class AdminDashboard extends JPanel {
         JButton signOutButton = new JButton("Sign Out");
         signOutButton.setFocusPainted(false);
         signOutButton.setBackground(new Color(0xD9534F));
+        signOutButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         signOutButton.setFont(new Font("Segoe UI", Font.PLAIN, 14));
         signOutButton.setForeground(Color.WHITE);
@@ -72,6 +83,7 @@ public class AdminDashboard extends JPanel {
 
         // Hovering Mouse
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 signOutButton.setBackground(new Color(0xB9534F));
                 
@@ -80,6 +92,7 @@ public class AdminDashboard extends JPanel {
                 signOutButton.setBackground(new Color(0xD9534F));
                 
             }
+            
         });
 
         // Sign Out Function
@@ -105,7 +118,7 @@ public class AdminDashboard extends JPanel {
 
         // Book/Member/Transaction tab Panels
         JTabbedPane tabbedPane = new JTabbedPane();
-        tabbedPane.add("Books", new BooksPanel(getName()));
+        tabbedPane.add("Books", new BooksPanel("admin"));
         tabbedPane.add("Members", new MembersPanel());
         tabbedPane.add("Transactions", new TransactionsPanel());
 

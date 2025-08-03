@@ -2,6 +2,19 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.7] - 2025-08-03
+
+> The part where [Melody](https://github.com/MahYM0605) finally gets his hands-on...
+
+### Added
+
+- Student's Dashboard is added partially.
+- Member's Panel have the same functions as the Book's Panel
+
+### Changed
+
+- Code Structure is optimized and cleaned.
+
 ## [1.6] - 2025-07-29
 
 > Notable Changes are applied mostly to Book Panel from Admin's Dashboard.

@@ -178,6 +178,7 @@ public class RegisterMain extends JFrame {
         return fieldPanel;
     }
 
+    // Register Method
     private void handleRegister() {
         String username = usernameField.getText().trim();
         String password = new String(passwordField.getPassword()).trim();
@@ -197,22 +198,18 @@ public class RegisterMain extends JFrame {
         User newUser = UserDAO.registerUser(username, password, "student", email);
         
         if (newUser != null) {
+            // Completed Register
+
             JOptionPane.showMessageDialog(this, "Registration successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
             this.dispose(); // Close registration frame
             
             LoginMain loginMain = new LoginMain();
             loginMain.setVisible(true);
-
-            JFrame dashboardFrame = new JFrame();
-            dashboardFrame.setSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize()));
-            dashboardFrame.setExtendedState(MAXIMIZED_BOTH);
             
-            dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         }
         
         else {
             JOptionPane.showMessageDialog(null, "Registration Unsuccessful!");
         }
-
     } 
 }
