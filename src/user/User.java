@@ -23,6 +23,15 @@ public abstract class User {
         this.bannedStatus = bannedStatus;
     }
 
+    public User(int ID, String username, String password, String role, String email, boolean bannedStatus) {
+        this.id = ID;
+        this.username = username;
+        this.password = password;
+        this.role = role;
+        this.email = email;
+        this.bannedStatus = bannedStatus;
+    }
+
     public User(String username, String password, String role, String email, boolean bannedStatus) {
         this.username = username;
         this.password = password;

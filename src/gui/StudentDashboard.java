@@ -1,5 +1,6 @@
 package gui;
 
+import dao.TransDAO;
 import user.Student;
 import gui.panels.*;
 
@@ -36,13 +37,13 @@ public class StudentDashboard extends JPanel {
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Subtitles
-        JLabel subtitle1 = new JLabel("A book is a dream you hold in your hands.");
+        JLabel subtitle1 = new JLabel("A book is a dream you hold in your hands. - Yau Mun");
         subtitle1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        subtitle2 = new JLabel("Book Borrowed: ");
-        subtitle2.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+        subtitle2 = new JLabel("Book Borrowed: " + TransDAO.fetchTotalBookBorrowed(student.getID()));
+        subtitle2.setFont(new Font("Segoe UI", Font.BOLD, 16));
         subtitle2.setForeground(Color.WHITE);
         subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);
 
@@ -90,16 +91,16 @@ public class StudentDashboard extends JPanel {
         rightButtonPanel.setPreferredSize(new Dimension(120, 40));
         rightButtonPanel.add(signOutButton, BorderLayout.NORTH);
 
-        // === Add to topPanel ===
+        // Add to topPanel 
         topPanel.add(textPanel, BorderLayout.WEST);
         topPanel.add(rightButtonPanel, BorderLayout.EAST);
 
-        // === Add topPanel to main panel ===
         add(topPanel, BorderLayout.NORTH);
 
-        // Book/Member/Transaction tab Panels
+        // Book and Transaction Tab Panels
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add("Books", new BooksPanel(getName()));
+        tabbedPane.add("Borrow Transactions", new TransactionsPanel("Student"));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(new Color(233, 203, 197));

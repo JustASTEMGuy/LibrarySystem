@@ -80,6 +80,32 @@ public class BookDAO {
         }
         return false;
     }
+
+    // Return Books Method
+    public static boolean returnBook(int bookID) {
+        String checkSql = "SELECT quantity FROM books WHERE id = ?";
+        String updateSql = "UPDATE books SET quantity = quantity + 1 WHERE id = ? AND quantity > 0";
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement checkStmt = conn.prepareStatement(checkSql)) {
+
+            checkStmt.setInt(1, bookID);
+            ResultSet rs = checkStmt.executeQuery();
+            if (rs.next()) {
+                int qty = rs.getInt("quantity");
+                if (qty > 0) {
+                    try (PreparedStatement updateStmt = conn.prepareStatement(updateSql)) {
+                        updateStmt.setInt(1, bookID);
+                        int updated = updateStmt.executeUpdate();
+                        return updated > 0;
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Borrow failed: " + e.getMessage());
+        }
+        return false;
+    }
     
     public static void deleteBook(int id) {
         String delete = "DELETE FROM books WHERE id=?";
@@ -101,7 +127,6 @@ public class BookDAO {
 
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            System.out.println(book.getID());
             
             stmt.setString(1, book.getTitle());
             stmt.setString(2, book.getAuthor());

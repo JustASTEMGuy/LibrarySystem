@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.8] - 2025-08-04
+
+> Main Functions are completed.
+
+### Added
+
+- Full implementation of Student's basic access (Borrow / Return).
+- Completed core dashboard for both roles.
+
 ## [1.7] - 2025-08-03
 
 > The part where [Melody](https://github.com/MahYM0605) finally gets his hands-on...

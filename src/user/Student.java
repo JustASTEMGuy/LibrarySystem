@@ -11,6 +11,10 @@ public class Student extends User{
         super(ID, username, password, email, status);
     }
 
+    public Student(int ID, String username, String password, String role, String email, boolean status) {
+        super(ID, username, password, role, email, status);
+    }
+
     public Student(String username, String password, String role, String email, boolean status) {
         super(username, password, role, email, status);
     }

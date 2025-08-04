@@ -2,6 +2,10 @@ package gui.panels;
 
 import dao.BookDAO;
 import obj.Book;
+import dao.TransDAO;
+import gui.StudentDashboard;
+import gui.UserSession;
+import user.Student;
 
 import javax.swing.*;
 import javax.swing.event.*;
@@ -12,6 +16,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
@@ -64,7 +69,6 @@ public class BooksPanel extends JPanel {
         });
 
         searchField.addActionListener(e-> {
-            System.out.println("Action!");
             searchField.transferFocus();
             if (searchField.getText().equals("")) {
                 placeholderActive = true;
@@ -163,7 +167,6 @@ public class BooksPanel extends JPanel {
     // Update Method
     private void update() {
         tableModel.setRowCount(0);
-        System.out.println("Table Refreshed!");
 
         visibleBooks = isSortActive
         ? BookDAO.sortBook(currentSortColumn, isAscending)
@@ -187,18 +190,18 @@ public class BooksPanel extends JPanel {
         int bookQty = selectedBook.getQuantity();
 
         if("admin".equalsIgnoreCase(role)){
-        int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Edit", "Delete"},"Edit");
-        switch (choice) {
-            case 0: // Edit Function
-                showEditDialog(new Book(bookID, booktitle, bookAuthor, bookGenre, bookQty));
-                break;
+            int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Edit", "Delete"},"Edit");
+            switch (choice) {
+                case 0: // Edit Function
+                    showEditDialog(new Book(bookID, booktitle, bookAuthor, bookGenre, bookQty));
+                    break;
 
-            case 1:
-                deleteBook();
-                break;
-        
-            }
-        } 
+                case 1:
+                    deleteBook();
+                    break;
+            
+                }
+            } 
         else{
             int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Borrow", "View"},"Borrow");
         
@@ -213,13 +216,23 @@ public class BooksPanel extends JPanel {
         }
     }
 
+    // USER borrows book
     private void borrowBook(int bookID){
+        Student stu = UserSession.getStudent();
+        int userID = stu.getID();
         boolean success = BookDAO.borrowBook(bookID);
-        if(success){
+
+        LocalDate today = LocalDate.now();
+        boolean transSuccess = TransDAO.insertTransaction(userID, bookID, today);
+
+        if(success && transSuccess){
             JOptionPane.showMessageDialog(null, "Book borrowed successfully!");
             update();
         }
         else {
+            if (!transSuccess) {
+                JOptionPane.showMessageDialog(null, "Transaction Error!", "Error!", JOptionPane.ERROR_MESSAGE);
+            }
             JOptionPane.showMessageDialog(null, "Failed to borrow book.");
         }
     }

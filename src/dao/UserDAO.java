@@ -23,13 +23,18 @@ public class UserDAO {
 
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) { // Record is found 
+                int id = rs.getInt("id");
+                String uname = rs.getString("username");
+                String pass = rs.getString("password");
+                String email = rs.getString("email");
                 String role = rs.getString("role");
+                boolean banned = rs.getBoolean("Banned_Status");
+
                 if (role.equalsIgnoreCase("admin")) {
-                    System.out.println("It's an admin!");
                     return new Admin(username, password);
                 }
                 else if (role.equalsIgnoreCase("student")) {
-                    return new Student(username, password);
+                    return new Student(id, uname, pass, email, role, banned);
                 }
             }
 
@@ -161,7 +166,7 @@ public class UserDAO {
 
         try (Connection conn = DBConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
-            System.out.println(user.getID());
+            
             
             stmt.setString(1, user.getUsername());
             stmt.setString(2, user.getPassword());

@@ -45,7 +45,7 @@ public class AdminDashboard extends JPanel {
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Subtitles 
-        subtitle1 = new JLabel("Total Books Borrowed: ");
+        subtitle1 = new JLabel("Total Books: ");
         subtitle1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -120,7 +120,7 @@ public class AdminDashboard extends JPanel {
         JTabbedPane tabbedPane = new JTabbedPane();
         tabbedPane.add("Books", new BooksPanel("admin"));
         tabbedPane.add("Members", new MembersPanel());
-        tabbedPane.add("Transactions", new TransactionsPanel());
+        tabbedPane.add("Transactions", new TransactionsPanel("Admin"));
 
         JPanel centerPanel = new JPanel(new BorderLayout());
         centerPanel.setBackground(new Color(197, 202, 233));

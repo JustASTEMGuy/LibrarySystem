@@ -223,7 +223,11 @@ public class LoginMain extends JFrame {
                 }
                 
             } else if (user instanceof Student student) {
+                URL iUrl = getClass().getClassLoader().getResource("resources/studentbookicon.png");
+
                 dashboardFrame.setTitle("Student Dashboard");
+                dashboardFrame.setIconImage(Toolkit.getDefaultToolkit().getImage(iUrl));
+                UserSession.setStudent(student);
                 dashboardFrame.setContentPane(new StudentDashboard(student));
             }
 
