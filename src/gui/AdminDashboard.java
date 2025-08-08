@@ -1,5 +1,7 @@
 package gui;
 
+import dao.BookDAO;
+import dao.TransDAO;
 import dao.UserDAO;
 import user.Admin;
 import gui.panels.*;
@@ -45,7 +47,7 @@ public class AdminDashboard extends JPanel {
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Subtitles 
-        subtitle1 = new JLabel("Total Books: ");
+        subtitle1 = new JLabel("Total Books: " + BookDAO.fetchTotalBook());
         subtitle1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -55,7 +57,7 @@ public class AdminDashboard extends JPanel {
         subtitle2.setForeground(Color.WHITE);
         subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
 
-        subtitle3 = new JLabel("Total Transactions Owed: ");
+        subtitle3 = new JLabel("Total Transactions Owed: " + TransDAO.fetchTotalTransactions());
         subtitle3.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle3.setForeground(Color.WHITE);
         subtitle3.setAlignmentX(Component.LEFT_ALIGNMENT);

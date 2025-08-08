@@ -1,9 +1,9 @@
 # Library System with GUI
 ## Setup / Requirements
 ### Database Setup
-1. Run `db/schema.sql` on your **MySQL** server using **phpMyAdmin** or **MySQL CLI** before starting the application.
+1. Run `db/schema.sql` on your **MySQL** server using **phpMyAdmin** or **MySQL** before starting the application.
 2. Ensure the database is **online**.
-3. Insert sample data to the ``users`` table and set the role as ``Admin`` or ``Student`` for testing purposes.
+3. Insert sample data to the ``transactions`` table and ``users`` table, set the role as ``Admin`` or ``Student`` for testing purposes.
 
 ### Running the Code
 1. Using `buildcompile.ps1`, enter the following command to compile the `.ps1` file:

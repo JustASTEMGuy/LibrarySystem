@@ -106,6 +106,26 @@ public class BookDAO {
         }
         return false;
     }
+
+    public static int fetchTotalBook() {
+        String sql = "SELECT COUNT(*) FROM books";
+        int count = 0;
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+            return count;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
+    }
     
     public static void deleteBook(int id) {
         String delete = "DELETE FROM books WHERE id=?";

@@ -9,7 +9,7 @@ import java.awt.*;
 
 public class StudentDashboard extends JPanel {
     private final Student student;
-    private JLabel subtitle2;
+    private JLabel subtitle1, subtitle2, subtitle3;
 
     public StudentDashboard(Student student) {
         this.student = student;
@@ -37,7 +37,7 @@ public class StudentDashboard extends JPanel {
         title.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Subtitles
-        JLabel subtitle1 = new JLabel("A book is a dream you hold in your hands. - Yau Mun");
+        subtitle1 = new JLabel("A book is a dream you hold in your hands. - Yau Mun");
         subtitle1.setFont(new Font("Segoe UI", Font.PLAIN, 16));
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
@@ -47,10 +47,16 @@ public class StudentDashboard extends JPanel {
         subtitle2.setForeground(Color.WHITE);
         subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);
 
+        subtitle3 = new JLabel("Book Overdue: " + TransDAO.fetchTotalBookOverDue(student.getID()));
+        subtitle3.setFont(new Font("Segoe UI", Font.BOLD, 16));
+        subtitle3.setForeground(Color.WHITE);
+        subtitle3.setAlignmentX(Component.LEFT_ALIGNMENT);
+
         textPanel.add(title);
         textPanel.add(Box.createRigidArea(new Dimension(0, 10)));
         textPanel.add(subtitle1);
         textPanel.add(subtitle2);
+        textPanel.add(subtitle3);
         
         // Sign Out Button Setup
         JButton signOutButton = new JButton("Sign Out");
@@ -67,10 +73,14 @@ public class StudentDashboard extends JPanel {
 
         // Hovering Mouse
         signOutButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 signOutButton.setBackground(new Color(79, 120, 185));
                 
             }
+
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 signOutButton.setBackground(new Color(79, 109, 217));
                 

@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.9] - 2025-08-08
+
+> Added several comments for references, updated `README.md`, preparing for Assignment's shipment...
+
 ## [1.8] - 2025-08-04
 
 > Main Functions are completed.

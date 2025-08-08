@@ -83,6 +83,26 @@ public class TransDAO {
         return transList;
     }
 
+    public static int fetchTotalTransactions() {
+        String sql = "SELECT COUNT(*) FROM transactions";
+        int count = 0;
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+                
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+            return count;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
+    }
+
     public static ArrayList<Transactions> sortTransactions(int index, boolean asc) {
         String columnName;
 
@@ -283,6 +303,27 @@ public class TransDAO {
 
     public static int fetchTotalBookBorrowed(int userID) {
         String sql = "SELECT COUNT(*) FROM transactions WHERE user_id = ? AND status = \"Borrowed\"";
+        int count = 0;
+
+        try (Connection conn = DBConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+            
+            stmt.setInt(1, userID);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                count = rs.getInt(1);
+            }
+
+            return count;
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return 0;
+        }
+    }
+
+    public static int fetchTotalBookOverDue(int userID) {
+        String sql = "SELECT COUNT(*) FROM transactions WHERE user_id = ? AND status = \"Overdue\"";
         int count = 0;
 
         try (Connection conn = DBConnection.getConnection();
