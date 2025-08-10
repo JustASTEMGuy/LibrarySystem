@@ -18,6 +18,7 @@ public class Transactions {
         this.status = status;
     }
 
+    // Overloading
     public Transactions(int id, int bookID, LocalDate borrowDate, LocalDate returnDate, String status) {
         this.id = id;
         this.bookID = bookID;
@@ -26,6 +27,7 @@ public class Transactions {
         this.status = status;
     }
 
+    // Getters [Encapsulation]
     public int getID() {
         return id;
     }

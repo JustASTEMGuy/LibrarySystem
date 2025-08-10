@@ -199,7 +199,6 @@ public class TransactionsPanel extends JPanel{
 
         else {
             JOptionPane.showMessageDialog(null, "This transaction has already been solved!");
-            return;
         }
     }
 

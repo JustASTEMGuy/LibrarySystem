@@ -4,6 +4,7 @@ public class Book {
     private int id, quantity;
     private String title, author, genre;
 
+    // Constructor
     public Book(int id, String title, String author, String genre, int quantity) {
         this.id = id;
         this.title = title;
@@ -20,6 +21,7 @@ public class Book {
         this.quantity = quantity;
     }
 
+    // Getters [Encapsulation]
     public int getID() {
         return id;
     }

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 02, 2025 at 10:38 AM
+-- Generation Time: Aug 10, 2025 at 09:19 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -41,13 +41,31 @@ CREATE TABLE `books` (
 
 INSERT INTO `books` (`id`, `title`, `author`, `genre`, `quantity`) VALUES
 (10007, 'Melody\'s Alarm', 'Melody', 'ok', 100),
-(10014, 'Press Conference', 'Mr. Teow', 'ok', 2),
-(10016, 'hear me out bro', 'noted', 'no u', 40),
 (10017, 'How to ZiMing', 'Zi Ming', 'random', 220),
-(10018, 'Almost Here', 'Dr. Lim', 'Fiction', 42),
-(10019, 'Unique Stage', 'ChinKeng', 'Romance', 22),
-(10020, 'Hairy Poter', 'Not the real author', 'Fiction', 413),
 (10021, 'Sam\'s Alarm', 'Zi Ming', 'ok', 200);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `transactions`
+--
+
+CREATE TABLE `transactions` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `book_id` int(11) NOT NULL,
+  `borrow_date` date NOT NULL,
+  `return_date` date DEFAULT NULL,
+  `status` enum('Borrowed','Returned','Overdue','') NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `transactions`
+--
+
+INSERT INTO `transactions` (`id`, `user_id`, `book_id`, `borrow_date`, `return_date`, `status`) VALUES
+(240000, 10006, 10014, '2025-08-08', '2025-08-08', 'Returned'),
+(240001, 10007, 10019, '2025-08-08', NULL, 'Borrowed');
 
 -- --------------------------------------------------------
 
@@ -72,9 +90,7 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `email`, `Banned_Stat
 (10001, 'sam', 'sam123', 'Admin', 'sam@gmail.com', 0),
 (10003, 'dedrik', 'dedded', 'Student', 'ded@gmail', 0),
 (10006, 'ok', 'okokok', 'Student', 'ok@gm', 0),
-(10007, 'coach', 'coach123', 'Student', 'coach@ok.com', 0),
-(10008, 'o', 'o', 'Student', 'o', 0),
-(10011, 'nimacibbai', 'ok', 'Student', 'kkk', 0);
+(10007, 'coach', 'coach123', 'Student', 'coach@ok.com', 0);
 
 --
 -- Indexes for dumped tables
@@ -84,6 +100,12 @@ INSERT INTO `users` (`id`, `username`, `password`, `role`, `email`, `Banned_Stat
 -- Indexes for table `books`
 --
 ALTER TABLE `books`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `transactions`
+--
+ALTER TABLE `transactions`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -104,10 +126,16 @@ ALTER TABLE `books`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10022;
 
 --
+-- AUTO_INCREMENT for table `transactions`
+--
+ALTER TABLE `transactions`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=240002;
+
+--
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10012;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10013;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

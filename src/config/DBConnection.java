@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+// This file aims to connect Java program to an SQL database using JDBC
 public class DBConnection {
 
     private static final String URL = "jdbc:mysql://localhost:3306/library_database?useSSL=false&serverTimezone=UTC";

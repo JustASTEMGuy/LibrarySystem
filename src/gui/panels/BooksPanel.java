@@ -1,5 +1,6 @@
-package gui.panels;
+package gui.panels; 
 
+// Import Packages
 import dao.BookDAO;
 import obj.Book;
 import dao.TransDAO;
@@ -9,7 +10,7 @@ import user.Student;
 
 import javax.swing.*;
 import javax.swing.event.*;
-
+import javax.swing.table.DefaultTableModel;
 
 import java.awt.*;
 import java.awt.event.FocusEvent;
@@ -17,20 +18,21 @@ import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
-import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
 
-
+// Perform Inheritance - extends from Jawa Swing's JPanel
 public class BooksPanel extends JPanel {
 
     private JTable bookTable;
-    public DefaultTableModel tableModel;
     private JButton addButton, sortButton;
     private boolean isSortActive, isAscending, placeholderActive;
     private int currentSortColumn;
     private ArrayList<Book> visibleBooks = new ArrayList<>();
     private String role;
 
+    public DefaultTableModel tableModel;
+
+    // Constructor with a role parameter hehe
     public BooksPanel(String role) {
         this.role = role;
         setLayout(new BorderLayout());
@@ -339,6 +341,7 @@ public class BooksPanel extends JPanel {
 
             int quantity;
 
+            // Error Handling with Try-Catch Block
             try {
                 quantity = Integer.parseInt(q);
 
@@ -400,7 +403,8 @@ public class BooksPanel extends JPanel {
     private void handleSearch(String phrase) {
         visibleBooks = BookDAO.searchUpdate(phrase);
         tableModel.setRowCount(0);
-        for (Book b : visibleBooks) {
+
+        for (Book b : visibleBooks) { // Fetch books to display in table
             tableModel.addRow(new Object[]{b.getID(), b.getTitle(), b.getAuthor(), b.getGenre(), b.getQuantity()});
         }
     }

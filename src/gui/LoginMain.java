@@ -97,12 +97,13 @@ public class LoginMain extends JFrame {
         loginButton.setFocusable(true);
         getRootPane().setDefaultButton(loginButton);
 
+        // Register Button
         JButton registerButton = new JButton("Register");
         registerButton.setBackground(new Color(0, 43, 91));
         registerButton.setForeground(new Color(143, 227, 207));
         registerButton.setFocusPainted(false);
         registerButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         registerButton.setPreferredSize(buttonSize);
         registerButton.setMaximumSize(buttonSize);
         registerButton.setMinimumSize(buttonSize);
@@ -119,8 +120,7 @@ public class LoginMain extends JFrame {
 
         });
 
-        // Register Button!
-        registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        // Register Button Redirection
         registerButton.addActionListener(e -> {
 
             JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(formBox);
@@ -131,6 +131,7 @@ public class LoginMain extends JFrame {
 
         });
         
+        // Register Mouse Detection
         registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
             
 
@@ -143,16 +144,39 @@ public class LoginMain extends JFrame {
             }
         });
 
+        // Exit Button
+        JButton exitButton = new JButton("Exit");
+        exitButton.setBackground(new Color(200, 43, 91));
+        exitButton.setForeground(new Color(255, 227, 207));
+        exitButton.setFocusPainted(false);
+        exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        exitButton.setPreferredSize(buttonSize);
+        exitButton.setMaximumSize(buttonSize);
+        exitButton.setMinimumSize(buttonSize);
+        exitButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        ImageIcon exitIcon = new ImageIcon("src\\resources\\exiticon.png");
+        exitButton.addActionListener(e -> {
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure you want to exit the program?", "Exit Confirmation", 
+            JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE,exitIcon);
+            if (result == 0) {
+                this.dispose();
+            }
+        });
+
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
 
         buttonPanel.add(loginButton);
         buttonPanel.add(registerButton);
+        
 
         formBox.add(Box.createRigidArea(new Dimension(0, 20)));
 
         buttonPanel.setBorder(new EmptyBorder(0, 80, 0, 0));
         formBox.add(buttonPanel);
+        formBox.add(exitButton);
 
         return formBox;
 
@@ -209,6 +233,7 @@ public class LoginMain extends JFrame {
             
             dashboardFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
+            // Role Checking
             if (user instanceof Admin admin) {
                 dashboardFrame.setTitle("O' Days Library Management System - Admin Dashboard");
                 dashboardFrame.setContentPane(new AdminDashboard(admin));

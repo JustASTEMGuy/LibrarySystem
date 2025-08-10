@@ -6,7 +6,7 @@
 3. Insert sample data to the ``transactions`` table and ``users`` table, set the role as ``Admin`` or ``Student`` for testing purposes.
 
 ### Running the Code
-1. Using `buildcompile.ps1`, enter the following command to compile the `.ps1` file:
+1. Using the **powershell** terminal, enter the following command to compile the `.ps1` file:
 ```bash
 .\buildcompile.ps1
 ```
@@ -34,16 +34,14 @@ The workspace contain multiple folders, **where**:
 - `src`: the folder to maintain sources
 - `lib`: the folder to maintain dependencies
 - `bin`: the folder to store compiled output files
-- `main`: the folder to store `Main` class
+- `main`: the folder to store `Main` class, used to run the program
 - `obj`: the folder to incorporate objects for OOP
 - `resources`: the folder to store resources such as images
 - `test`: the folder to store test files
 - `user`: the folder to store user's class
 
 ## Dependencies
-- [Git](https://git-scm.com/) -- Version Control
-
-- [MySQL](https://www.mysql.com/) -- Database
+- [MySQL](https://www.mysql.com/) (Database)
 
 ## Credits
 - [Woon Wei Jian](https://github.com/JustASTEMGuy)

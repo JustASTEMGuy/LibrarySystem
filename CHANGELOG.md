@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.0] - 2025-08-10
+
+### Added
+- Exit button is added for easier access rather than having to close the window manually.
+- Additional comments are added to the code for easier understanding.
+
+### Changed
+- `schema.sql` is updated to the latest version to prevent Database Errors.
+- "Book Borrowed:" changed to "**Current** Book Borrowed:" to prevent misunderstanding.
+- `README.md` is modified for a better comprehension.
+
 ## [1.9] - 2025-08-08
 
 > Added several comments for references, updated `README.md`, preparing for Assignment's shipment...

@@ -1,4 +1,6 @@
-package gui;
+package gui; // Packaging
+
+// Import packages
 
 import dao.BookDAO;
 import dao.TransDAO;
@@ -9,23 +11,26 @@ import gui.panels.*;
 import javax.swing.*;
 import java.awt.*;
 
+// Extends from JPanel, inheritance
 public class AdminDashboard extends JPanel {
     private Admin admin;
     public static JLabel subtitle1, subtitle2, subtitle3;
 
+    // Constructor
     public AdminDashboard(Admin admin) {
         this.admin = admin;
         initUI();
     }
 
-    public AdminDashboard() {
-    
-    }
+    // Overloading
+    public AdminDashboard() {}
 
+    // Method to update subtitle
     public static void setSubtitle(String text) {
         subtitle2.setText(text);
     }
 
+    // UI Method
     private void initUI() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);

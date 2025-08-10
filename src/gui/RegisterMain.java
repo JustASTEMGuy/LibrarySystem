@@ -6,9 +6,6 @@ import java.awt.*;
 import java.net.URL;
 
 import dao.UserDAO;
-
-import user.Admin;
-import user.Student;
 import user.User;
 
 public class RegisterMain extends JFrame {
@@ -93,49 +90,55 @@ public class RegisterMain extends JFrame {
         registerButton.setMinimumSize(buttonSize);
 
         // Hovering "Animation"
-
         registerButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         registerButton.addActionListener(e -> handleRegister());
         registerButton.addMouseListener(new java.awt.event.MouseAdapter() {
 
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 registerButton.setBackground(new Color(43, 72, 101));
             }
 
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 registerButton.setBackground(new Color(0, 43, 91)); 
             }
         });
 
+        // Login Button to redirect back to login page
         JButton loginButton = new JButton("Back to Login");
         loginButton.setBackground(new Color(0, 43, 91));
         loginButton.setForeground(new Color(143, 227, 207));
         loginButton.setFocusPainted(false);
         loginButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-
+        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         loginButton.setPreferredSize(buttonSize);
         loginButton.setMaximumSize(buttonSize);
         loginButton.setMinimumSize(buttonSize);
 
         // Hovering "Animation"
 
-        loginButton.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        loginButton.addActionListener(e -> {JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(formBox);
+        loginButton.addActionListener(e -> {
+
+            JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(formBox);
             topFrame.dispose(); // Close login window
 
             LoginMain loginMain = new LoginMain(); // Launch registration
             loginMain.setVisible(true);});
             loginButton.addMouseListener(new java.awt.event.MouseAdapter() {
 
+            @Override
             public void mouseEntered(java.awt.event.MouseEvent evt) {
                 loginButton.setBackground(new Color(43, 72, 101));
             }
 
+            @Override
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 loginButton.setBackground(new Color(0, 43, 91)); 
             }
         });
 
+        // Panel to display buttons in an orderly way
         JPanel buttonPanel = new JPanel();
         buttonPanel.setOpaque(false);
 
@@ -195,6 +198,7 @@ public class RegisterMain extends JFrame {
             return;
         }
 
+        // Register User into DB
         User newUser = UserDAO.registerUser(username, password, "student", email);
         
         if (newUser != null) {
@@ -209,7 +213,7 @@ public class RegisterMain extends JFrame {
         }
         
         else {
-            JOptionPane.showMessageDialog(null, "Registration Unsuccessful!");
+            JOptionPane.showMessageDialog(null, "Registration Unsuccessful!", "Error!", JOptionPane.ERROR_MESSAGE);
         }
     } 
 }

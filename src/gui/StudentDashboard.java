@@ -11,11 +11,13 @@ public class StudentDashboard extends JPanel {
     private final Student student;
     private JLabel subtitle1, subtitle2, subtitle3;
 
+    // Constructor with logged in student
     public StudentDashboard(Student student) {
         this.student = student;
         initUI();
     }
 
+    // UI Method
     private void initUI() {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
@@ -42,7 +44,7 @@ public class StudentDashboard extends JPanel {
         subtitle1.setForeground(Color.WHITE);
         subtitle1.setAlignmentX(Component.LEFT_ALIGNMENT);
 
-        subtitle2 = new JLabel("Book Borrowed: " + TransDAO.fetchTotalBookBorrowed(student.getID()));
+        subtitle2 = new JLabel("Current Book Borrowed: " + TransDAO.fetchTotalBookBorrowed(student.getID()));
         subtitle2.setFont(new Font("Segoe UI", Font.BOLD, 16));
         subtitle2.setForeground(Color.WHITE);
         subtitle2.setAlignmentX(Component.LEFT_ALIGNMENT);
