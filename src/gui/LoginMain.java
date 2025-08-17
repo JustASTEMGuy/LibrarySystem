@@ -39,7 +39,7 @@ public class LoginMain extends JFrame {
         setExtendedState(JFrame.MAXIMIZED_BOTH); // Maximized by default
         add(createFormBox());
         setSize(screenSize);
-        setResizable(false); // Not Resizable
+        setResizable(true); // Not Resizable
         setVisible(true); // Show GUI
     }
 

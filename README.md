@@ -40,8 +40,17 @@ The workspace contain multiple folders, **where**:
 - `test`: the folder to store test files
 - `user`: the folder to store user's class
 
-## Dependencies
-- [MySQL](https://www.mysql.com/) (Database)
+## Using the System
+As an admin:
+
+- Click the `'Add Books'` button to add new books. [Book IDs are auto-incremented]
+- Double click any row to **edit** or **delete** the row's book.
+- Click the sort icon on the right to **sort** the books.
+
+As a user:
+
+- Double click any row to **borrow** or **view** the full details of the selected book.
+- Navigate to the `transaction` panel and double click the row to return the book.
 
 ## Credits
 - [Woon Wei Jian](https://github.com/JustASTEMGuy)

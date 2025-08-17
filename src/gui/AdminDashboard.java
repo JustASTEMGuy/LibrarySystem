@@ -136,4 +136,8 @@ public class AdminDashboard extends JPanel {
 
         add(centerPanel, BorderLayout.CENTER);
     }
+
+    public static void updateSubtitle1() {
+        subtitle1.setText("Total Books: " + String.valueOf(BookDAO.fetchTotalBook()));
+    }
 }

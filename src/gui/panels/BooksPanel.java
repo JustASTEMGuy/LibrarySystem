@@ -4,6 +4,7 @@ package gui.panels;
 import dao.BookDAO;
 import obj.Book;
 import dao.TransDAO;
+import gui.AdminDashboard;
 import gui.StudentDashboard;
 import gui.UserSession;
 import user.Student;
@@ -124,7 +125,6 @@ public class BooksPanel extends JPanel {
 
         if(!"admin".equalsIgnoreCase(role)){
             addButton.setVisible(false);
-            sortButton.setVisible(false);
         }
 
         toolbar.add(leftbar, BorderLayout.WEST);
@@ -191,6 +191,7 @@ public class BooksPanel extends JPanel {
         String bookGenre = selectedBook.getGenre();
         int bookQty = selectedBook.getQuantity();
 
+        // Role: Admin
         if("admin".equalsIgnoreCase(role)){
             int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Edit", "Delete"},"Edit");
             switch (choice) {
@@ -204,6 +205,8 @@ public class BooksPanel extends JPanel {
             
                 }
             } 
+
+        // Role: Student
         else{
             int choice = JOptionPane.showOptionDialog(null,"Choose an action for: " + booktitle,"Book Options",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE,null,new String[]{"Borrow", "View"},"Borrow");
         
@@ -214,7 +217,7 @@ public class BooksPanel extends JPanel {
             case 1: // View
                 JOptionPane.showMessageDialog(null, "Title: " + booktitle + "\nAuthor: " + bookAuthor + "\nGenre: " + bookGenre + "\nQuantity: " + bookQty, "Book Details", JOptionPane.INFORMATION_MESSAGE);
                 break;
-        }
+            }
         }
     }
 
@@ -261,6 +264,7 @@ public class BooksPanel extends JPanel {
 
         BookDAO.deleteBook(bookID);
         JOptionPane.showMessageDialog(null, "Deleted " + booktitle);
+        AdminDashboard.updateSubtitle1();
         update();
     }
 
@@ -357,6 +361,7 @@ public class BooksPanel extends JPanel {
             
             BookDAO.addBook(titleField.getText(), authorField.getText(), genreField.getText(), quantity);
             update();
+            AdminDashboard.updateSubtitle1();
         }
     }
 

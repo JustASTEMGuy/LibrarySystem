@@ -84,7 +84,7 @@ public class TransDAO {
     }
 
     public static int fetchTotalTransactions() {
-        String sql = "SELECT COUNT(*) FROM transactions";
+        String sql = "SELECT COUNT(*) FROM transactions WHERE status != \'Returned\'";
         int count = 0;
 
         try (Connection conn = DBConnection.getConnection();
